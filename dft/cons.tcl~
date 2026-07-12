@@ -1,0 +1,177 @@
+
+####################################################################################
+# Constraints
+# ----------------------------------------------------------------------------
+#
+# 0. Design Compiler variables
+#
+# 1. Master Clock Definitions
+#
+# 2. Generated Clock Definitions
+#
+# 3. Clock Uncertainties
+#
+# 4. Clock Latencies 
+#
+# 5. Clock Relationships
+#
+# 6. #set input/output delay on ports
+#
+# 7. Driving cells
+#
+# 8. Output load
+
+####################################################################################
+           #########################################################
+                  #### Section 0 : DC Variables ####
+           #########################################################
+#################################################################################### 
+
+# Prevent assign statements in the generated netlist (must be applied before compile command)
+set_fix_multiple_port_nets -all -buffer_constants -feedthroughs
+
+####################################################################################
+           #########################################################
+                  #### Section 1 : Clock Definition ####
+           #########################################################
+#################################################################################### 
+# 1. Master Clock Definitions 
+# 2. Generated Clock Definitions
+# 3. Clock Latencies
+# 4. Clock Uncertainties
+# 4. Clock Transitions
+####################################################################################
+
+#1. Master Clocks
+set period [expr 1000/3.686/2]
+set clk [expr 1000/3.686]
+#2. Generated clocks
+
+
+
+####################################################################################
+           #########################################################
+             #### Section 2 : Clocks Relationship ####
+           #########################################################
+####################################################################################
+create_clock -name CLK_REF  -period 100 -waveform {0 50}      [get_ports REF_CLK]
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_REF]
+set_clock_uncertainty -hold  0.1 [get_clocks CLK_REF]
+set_clock_transition 0.5          [get_clocks CLK_REF]
+set_clock_latency    0            [get_clocks CLK_REF]
+
+create_clock -name CLK_UART -period $clk -waveform {0 135.6483993}   [get_ports UART_CLK]
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_UART]
+set_clock_uncertainty -hold  0.1 [get_clocks CLK_UART]
+set_clock_transition 0.5          [get_clocks CLK_UART]
+set_clock_latency    0            [get_clocks CLK_UART]
+
+create_generated_clock -name CLK_RX -master_clock CLK_UART -source [get_ports UART_CLK] \
+    -divide_by 1  [get_ports clk_div_rx_dut/o_div_clk]
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_RX]
+set_clock_uncertainty -hold  0.1 [get_clocks CLK_RX]
+
+
+
+create_generated_clock -name CLK_TX -master_clock CLK_UART -source [get_ports UART_CLK] \
+    -divide_by 32 [get_pins clk_div_tx_dut/o_div_clk]
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_TX]
+set_clock_uncertainty -hold  0.1 [get_clocks CLK_TX]
+
+
+
+create_generated_clock -name CLK_ALU -master_clock CLK_REF -source [get_ports REF_CLK] \
+    -divide_by 1  [get_pins clk_gate_dut/GATED_CLK]
+set_clock_uncertainty -setup 0.2 [get_clocks CLK_ALU]
+set_clock_uncertainty -hold  0.1 [get_clocks CLK_ALU]
+
+
+create_clock -name S_CLK  -period $clk -waveform {0 135.6483993}      [get_ports scan_clk]
+set_clock_uncertainty -setup 0.2 [get_clocks S_CLK]
+set_clock_uncertainty -hold  0.1 [get_clocks S_CLK]
+set_clock_transition 0.5          [get_clocks S_CLK]
+set_clock_latency    0            [get_clocks S_CLK]
+
+set_clock_groups -asynchronous -group [get_clocks "CLK_REF CLK_ALU"] -group [get_clocks "CLK_RX CLK_TX CLK_UART"] -group [get_clocks S_CLK]
+set_multicycle_path -setup 32 -from CLK_TX -to CLK_UART
+set_multicycle_path -setup 31 -from CLK_TX -to CLK_UART
+
+set_dont_touch_network [get_clocks {CLK_UART CLK_REF CLK_TX CLK_RX CLK_ALU S_CLK}]
+set_dont_touch_network [get_ports  RST_N]
+
+
+
+####################################################################################
+           #########################################################
+             #### Section 3 : #set input/output delay on ports ####
+           #########################################################
+####################################################################################
+
+set delay [expr 0.2*1000/3.686]
+set delays [expr 0.2*1000*32/3.686]
+set_input_delay  $delay   -clock CLK_RX [get_ports UART_RX_IN]
+set_output_delay $delays -clock CLK_TX [get_ports UART_TX_O]
+
+set_input_delay  $delay   -clock CLK_RX [get_ports SI]
+set_output_delay $delays -clock CLK_TX [get_ports SO]
+
+set_input_delay  $delay   -clock CLK_RX [get_ports SE]
+
+
+####################################################################################
+           #########################################################
+                  #### Section 4 : Driving cells ####
+           #########################################################
+####################################################################################
+
+set_driving_cell -library scmetro_tsmc_cl013g_rvt_ss_1p08v_125c -lib_cell BUFX2M -pin Y \
+    [get_ports UART_RX_IN]
+
+set_driving_cell -library scmetro_tsmc_cl013g_rvt_ss_1p08v_125c -lib_cell BUFX2M -pin Y \
+    [get_ports SI]
+
+set_driving_cell -library scmetro_tsmc_cl013g_rvt_ss_1p08v_125c -lib_cell BUFX2M -pin Y \
+    [get_ports SE]
+
+
+####################################################################################
+           #########################################################
+                  #### Section 5 : Output load ####
+           #########################################################
+####################################################################################
+set_load 0.1 [get_ports UART_TX_O]
+set_load 0.1 [get_ports SO]
+
+
+####################################################################################
+           #########################################################
+                 #### Section 6 : Operating Condition ####
+           #########################################################
+####################################################################################
+
+# Define the Worst Library for Max(#setup) analysis
+# Define the Best Library for Min(hold) analysis
+
+set_operating_conditions -min_library "scmetro_tsmc_cl013g_rvt_ff_1p32v_m40c" -min "scmetro_tsmc_cl013g_rvt_ff_1p32v_m40c" -max_library "scmetro_tsmc_cl013g_rvt_ss_1p08v_125c" -max "scmetro_tsmc_cl013g_rvt_ss_1p08v_125c"
+
+####################################################################################
+           #########################################################
+                  #### Section 7 : wireload Model ####
+           #########################################################
+####################################################################################
+
+set_wire_load_model -name tsmc13_wl30 -library scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+####################################################################################
+           #########################################################
+                  #### Section 8 : premapped cells ####
+           #########################################################
+####################################################################################
+
+
+####################################################################################
+
+ set_case_analysis 1 [get_ports test_mode]
+
+
+

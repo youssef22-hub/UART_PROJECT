@@ -1,0 +1,64 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : SYS_TOP
+Version: K-2015.06
+Date   : Mon Sep 29 21:07:16 2025
+****************************************
+
+Operating Conditions: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c   Library: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+Wire Load Model Mode: top
+
+  Startpoint: controller_dut/current_state_reg[3]
+              (rising edge-triggered flip-flop clocked by S_CLK)
+  Endpoint: clk_gate_dut/Latch_Out_reg
+            (negative level-sensitive latch clocked by S_CLK)
+  Path Group: S_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  SYS_TOP            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock S_CLK (rise edge)                                 0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  controller_dut/current_state_reg[3]/CK (SDFFRQX4M)      0.00       0.00 r
+  controller_dut/current_state_reg[3]/Q (SDFFRQX4M)       1.03       1.03 r
+  controller_dut/U77/Y (INVX2M)                           0.58       1.61 f
+  controller_dut/U75/Y (NOR2X4M)                          0.74       2.35 r
+  controller_dut/U53/Y (NAND2X2M)                         0.39       2.74 f
+  controller_dut/U52/Y (CLKBUFX6M)                        0.84       3.58 f
+  controller_dut/U54/Y (NAND2X2M)                         0.49       4.07 r
+  controller_dut/gate_en (controller_test_1)              0.00       4.07 r
+  clk_gate_dut/CLK_EN (CLK_GATE)                          0.00       4.07 r
+  clk_gate_dut/Latch_Out_reg/D (TLATNX1M)                 0.00       4.07 r
+  data arrival time                                                  4.07
+
+  clock S_CLK (fall edge)                               135.65     135.65
+  clock network delay (ideal)                             0.00     135.65
+  clock uncertainty                                      -0.20     135.45
+  clk_gate_dut/Latch_Out_reg/GN (TLATNX1M)                0.00     135.45 f
+  time borrowed from endpoint                             0.00     135.45
+  data required time                                               135.45
+  --------------------------------------------------------------------------
+  data required time                                               135.45
+  data arrival time                                                 -4.07
+  --------------------------------------------------------------------------
+  slack (MET)                                                      131.38
+
+  Time Borrowing Information
+  --------------------------------------------------------------
+  S_CLK nominal pulse width                             135.65   
+  library setup time                                     -0.12   
+  --------------------------------------------------------------
+  max time borrow                                       135.53   
+  actual time borrow                                      0.00   
+  --------------------------------------------------------------
+
+
+1
