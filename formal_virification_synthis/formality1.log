@@ -1,0 +1,41 @@
+Info:  Net r:/WORK/SYS_TOP/SO[2] is undriven.
+Info:  Net r:/WORK/SYS_TOP/SO[1] is undriven.
+Info:  Net r:/WORK/SYS_TOP/SO[0] is undriven.
+Info:  Net i:/WORK/SYS_TOP/SO[2] is undriven.
+Info:  Net i:/WORK/SYS_TOP/SO[1] is undriven.
+Info:  Net i:/WORK/SYS_TOP/SO[0] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[7] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[6] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[5] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[4] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[3] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[2] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[1] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/remainder[0] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW_div_uns_0/divide_by_0 is undriven.
+Info:  Net i:/WORK/ALU_16B_DW01_sub_0/CO is undriven.
+Info:  Net i:/WORK/ALU_16B_DW01_add_0/CO is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[15] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[14] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[13] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[12] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[11] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[10] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[9] is undriven.
+Info:  Net i:/WORK/ALU_16B_DW02_mult_0/PRODUCT[8] is undriven.
+Info:  guide_transformation 59 (Line: 448)  Rejected transformation 59 because design 'uart_rx_fsm' cannot be found.
+Info:  guide_transformation 59 (Line: 448) Retrying with unread processing enabled.
+Info:  guide_transformation 59 (Line: 448)  Rejected transformation 59 because design 'uart_rx_fsm' cannot be found.
+Info:  SVF Operation 59 (Line: 448) - transformation_share.  Status: rejected
+
+Info:  guide_transformation 60 (Line: 467)  Rejected transformation 60 because design 'uart_rx_fsm' cannot be found.
+Info:  guide_transformation 60 (Line: 467) Retrying with unread processing enabled.
+Info:  guide_transformation 60 (Line: 467)  Rejected transformation 60 because design 'uart_rx_fsm' cannot be found.
+Info:  SVF Operation 60 (Line: 467) - transformation_share.  Status: rejected
+
+Info:  guide_uniquify 64 (Line: 512)  Cannot find object "clk_div_rx_dut/U11" in design 'SYS_TOP'.
+Info:  SVF Operation 64 (Line: 512) - uniquify.  Status: rejected
+Info:  guide_uniquify 64 (Line: 512)  Cannot find object "clk_div_tx_dut/U11" in design 'SYS_TOP'.
+Info:  guide_uniquify 72 (Line: 553)  Cannot find object "ALU_dut/dp_cluster_0/mult_35" in design 'SYS_TOP'.
+Info:  Pre-verification of r:/WORK/ALU_16B/div_39 SUCCEEDED.
+Info:  Pre-verification of r:/WORK/ALU_16B/mult_35 SUCCEEDED.
